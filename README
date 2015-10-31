@@ -1,5 +1,7 @@
+#blockapps-tools
 
-This package contains tools to query the ethereum databases.
+[![BlockApps logo](http://blockapps.net/img/logo_cropped.png)](http://blockapps.net)
 
-This tool works in conjunction with the ethereum-client-haskell package.
+
+This package contains tools to query the strato databases.
 
