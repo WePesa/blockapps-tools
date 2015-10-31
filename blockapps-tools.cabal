@@ -35,7 +35,7 @@ executable queryStrato
                  , blockapps-data
                  , ethereum-rlp
                  , merkle-patricia-db
-                 , ethereum-util
+                 , blockapps-util
                  , ethereum-vm
                  , filepath
                  , haskoin
