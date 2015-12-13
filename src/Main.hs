@@ -115,20 +115,20 @@ main = do
 
 run::Options->IO ()
 
-run State{root=r, db=db'} = do
+run State{root=r} = do
   let sr = SHAPtr $ fst $ B16.decode $ BC.pack r
-  State.doit db' sr
+  State.doit sr
 
 run Block{hash=h, db=db'} = do
   Block.doit db' h
 
-run BlockGO{hash=h, db=db'} = do
-  BlockGO.doit db' h
+run BlockGO{hash=h} = do
+  BlockGO.doit h
          
 run Hash{hash=h, db=db'} = do
   Hash.doit db' h
 
-run Init{hash=h, db=db'} = do
+run Init{} = do
   undefined
 --  Init.doit db' h
 

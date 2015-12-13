@@ -7,7 +7,7 @@ import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), (</>))
 
 import Blockchain.Format
 
-import DumpLevelDB
+import DumpLevelDB ()
 import Util
 
 --import Debug.Trace
