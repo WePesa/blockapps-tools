@@ -25,26 +25,28 @@ executable queryStrato
                  , array
                  , base16-bytestring
                  , binary
+                 , blockapps-data
+                 , blockapps-util
                  , bytestring
                  , cmdargs
                  , containers
                  , cryptohash
                  , data-default
                  , directory
-                 , strato-p2p-client
-                 , blockapps-data
                  , ethereum-rlp
-                 , merkle-patricia-db
-                 , blockapps-util
                  , ethereum-vm
                  , filepath
                  , haskoin
                  , leveldb-haskell
+                 , lens
+                 , merkle-patricia-db
+                 , milena
                  , monad-loops
                  , mtl
                  , network
                  , nibblestring
                  , resourcet
+                 , strato-p2p-client
                  , time
                  , transformers
     main-is: Main.hs

@@ -9,9 +9,11 @@ import BlockGO
 import Hash
 --import Init
 import Code
+import DumpKafkaBlocks
 import Raw
 import RLP
 import RawMP
+
 
 --import Debug.Trace
 
@@ -34,6 +36,7 @@ data Options =
   | Raw{filename::String}
   | RLP{filename::String}
   | Init{hash::String, db::String}
+  | DumpKafkaBlocks{}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -98,8 +101,12 @@ rawMPOptions =
     filename := def += typ "DBSTRING" += argPos 0
     ]
 
+dumpKafkaBlocksOptions::Annotate Ann
+dumpKafkaBlocksOptions =
+  record DumpKafkaBlocks{} []
+
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions]
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, dumpKafkaBlocksOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -144,3 +151,4 @@ run RLP{filename=f} = do
 run RawMP{stateRoot=sr, filename=f} = do
   RawMP.doit f (SHAPtr $ fst $ B16.decode $ BC.pack sr)
 
+run DumpKafkaBlocks{} = dumpKafkaBlocks
