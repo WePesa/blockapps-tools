@@ -12,7 +12,6 @@ import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), (</>))
 import qualified Data.NibbleString as N
 import Blockchain.Data.RLP
 
-import Blockchain.ExtDBs
 import qualified Blockchain.Database.MerklePatricia as MP
 import qualified Blockchain.Database.MerklePatricia.Internal as MP
 

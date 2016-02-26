@@ -23,7 +23,6 @@ import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as BC
 --import Text.PrettyPrint.ANSI.Leijen hiding ((<$>))
 
-import Blockchain.ExtDBs
 import qualified Blockchain.Database.MerklePatricia as MP
 
 
