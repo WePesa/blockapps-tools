@@ -24,6 +24,7 @@ import qualified Data.ByteString.Char8 as BC
 --import Text.PrettyPrint.ANSI.Leijen hiding ((<$>))
 
 import Blockchain.ExtDBs
+import qualified Blockchain.Database.MerklePatricia as MP
 
 
 data Options = 
@@ -123,7 +124,7 @@ main = do
 run::Options->IO ()
 
 run State{root=r} = do
-  let sr = SHAPtr $ fst $ B16.decode $ BC.pack r
+  let sr = MP.SHAPtr $ fst $ B16.decode $ BC.pack r
   State.doit sr
 
 run Block{hash=h, db=db'} = do
@@ -149,6 +150,6 @@ run RLP{filename=f} = do
   RLP.doit f
 
 run RawMP{stateRoot=sr, filename=f} = do
-  RawMP.doit f (SHAPtr $ fst $ B16.decode $ BC.pack sr)
+  RawMP.doit f (MP.SHAPtr $ fst $ B16.decode $ BC.pack sr)
 
 run DumpKafkaBlocks{} = dumpKafkaBlocks
