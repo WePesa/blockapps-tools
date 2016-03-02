@@ -33,6 +33,7 @@ executable queryStrato
                  , directory
                  , strato-p2p-client
                  , blockapps-data
+                 , blockapps-data-db
                  , ethereum-rlp
                  , merkle-patricia-db
                  , blockapps-util
