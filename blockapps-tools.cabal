@@ -17,50 +17,50 @@ source-repository this
   branch:   master
   tag:      v0.0.4
 
-executable queryStrato
-    default-language: Haskell98
-    build-depends: 
-                   base >= 4 && < 5
-                 , ansi-wl-pprint
-                 , array
-                 , base16-bytestring
-                 , binary
-                 , bytestring
-                 , cmdargs
-                 , containers
-                 , cryptohash
-                 , data-default
-                 , directory
-                 , strato-p2p-client
-                 , blockapps-data
-                 , blockapps-data-db
-                 , ethereum-rlp
-                 , merkle-patricia-db
-                 , blockapps-util
-                 , ethereum-vm
-                 , filepath
-                 , haskoin
-                 , leveldb-haskell
-                 , monad-loops
-                 , mtl
-                 , network
-                 , nibblestring
-                 , resourcet
-                 , time
-                 , transformers
-    main-is: Main.hs
-    other-modules:
-                   Block
-                   BlockGO
-                   Code
-                   DumpLevelDB
-                   Hash
-                   Init
-                   Raw
-                   RawMP
-                   RLP
-                   State
-                   Util
-    buildable: True
-    hs-source-dirs: src
+--executable queryStrato
+--    default-language: Haskell98
+--    build-depends: 
+--                   base >= 4 && < 5
+--                 , ansi-wl-pprint
+--                 , array
+--                 , base16-bytestring
+--                 , binary
+--                 , bytestring
+--                 , cmdargs
+--                 , containers
+--                 , cryptohash
+--                 , data-default
+--                 , directory
+--                 , strato-p2p-client
+--                 , blockapps-data
+--                 , blockapps-data-db
+--                 , ethereum-rlp
+--                 , merkle-patricia-db
+--                 , blockapps-util
+--                 , ethereum-vm
+--                 , filepath
+--                 , haskoin
+--                 , leveldb-haskell
+--                 , monad-loops
+--                 , mtl
+--                 , network
+--                 , nibblestring
+--                 , resourcet
+--                 , time
+--                 , transformers
+--    main-is: Main.hs
+--    other-modules:
+--                   Block
+--                   BlockGO
+--                   Code
+--                   DumpLevelDB
+--                   Hash
+--                   Init
+--                   Raw
+--                   RawMP
+--                   RLP
+--                   State
+--                   Util
+--    buildable: True
+--    hs-source-dirs: src--
 
