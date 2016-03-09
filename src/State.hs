@@ -17,6 +17,7 @@ import qualified Data.NibbleString as N
 import Blockchain.Data.RLP
 
 import qualified Blockchain.Colors as CL
+import Blockchain.Constants
 import Blockchain.Data.AddressStateDB
 import Blockchain.Format
 import qualified Blockchain.Database.MerklePatricia.Internal as MP
@@ -47,12 +48,12 @@ showVals sdb sr = do
       ++ tab ("\n" ++ format (rlpDecode $ rlpDeserialize $ rlpDecode val::AddressState))
       ++ "\n----------------------------"
 
-doit::MP.SHAPtr->IO()
-doit sr = do
+doit::String->MP.SHAPtr->IO()
+doit theType sr = do
   homeDir <- getHomeDirectory                     
   DB.runResourceT $ do
-    sdb <- DB.open (homeDir </> ".ethereum" </> "chaindata")
---    sdb <- DB.open (homeDir </> dbDir theType ++ stateDBPath)
+    --sdb <- DB.open (homeDir </> ".ethereum" </> "chaindata")
+    sdb <- DB.open (homeDir </> dbDir theType ++ stateDBPath)
            DB.defaultOptions{DB.cacheSize=1024}
            
     showVals sdb sr

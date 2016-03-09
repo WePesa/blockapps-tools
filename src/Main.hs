@@ -128,9 +128,9 @@ main = do
 
 run::Options->IO ()
 
-run State{root=r} = do
+run State{root=r, db=db'} = do
   let sr = MP.SHAPtr $ fst $ B16.decode $ BC.pack r
-  State.doit sr
+  State.doit db' sr
 
 run Block{hash=h, db=db'} = do
   Block.doit db' h
