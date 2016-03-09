@@ -54,6 +54,8 @@ executable queryStrato
                    Block
                    BlockGO
                    Code
+                   DumpKafkaBlocks
+                   DumpKafkaRaw
                    DumpLevelDB
                    Hash
                    Init
