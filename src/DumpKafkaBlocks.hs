@@ -26,20 +26,19 @@ fifth5::(a, b, c, d, e)->e
 fifth5 (_, _, _, _, x) = x
 
 dumpKafkaBlocks = do
-  _ <- runKafka (mkKafkaState "qqqqkafkaclientidqqqq" ("127.0.0.1", 9092)) doConsume'
+  _ <- runKafka (mkKafkaState "qqqqkafkaclientidqqqq" ("127.0.0.1", 9092)) $ doConsume' 0
   return ()
   where
-    doConsume' = do
-              stateRequiredAcks .= -1
-              stateWaitSize .= 1
-              stateWaitTime .= 100000
-              --offset <- getLastOffset LatestTime 0 "thetopic"
-              let offset = 0
-              result <- fetch offset 0 "thetopic"
+    doConsume' offset = do
+      stateRequiredAcks .= -1
+      stateWaitSize .= 1
+      stateWaitTime .= 100000
+      --offset <- getLastOffset LatestTime 0 "thetopic"
+      result <- fetch offset 0 "thetopic"
 
 
-              let qq = concat $ map (map (_kafkaByteString . fromJust . _valueBytes . fifth5 . _messageFields .  _setMessage)) $ map _messageSetMembers $ map fourth4 $ head $ map snd $ _fetchResponseFields result
+      let retByteStrings = concat $ map (map (_kafkaByteString . fromJust . _valueBytes . fifth5 . _messageFields .  _setMessage)) $ map _messageSetMembers $ map fourth4 $ head $ map snd $ _fetchResponseFields result
                                      
-              liftIO $ putStrLn $ unlines $ map format $ (map (rlpDecode . rlpDeserialize) qq::[Block])
+      liftIO $ putStrLn $ unlines $ map format $ (map (rlpDecode . rlpDeserialize) retByteStrings::[Block])
 
-              doConsume'
+      doConsume' (offset + fromIntegral (length retByteStrings))
