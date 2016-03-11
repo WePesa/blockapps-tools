@@ -34,11 +34,8 @@ dumpKafkaBlocks = do
       stateWaitSize .= 1
       stateWaitTime .= 100000
       --offset <- getLastOffset LatestTime 0 "thetopic"
-      result <- fetch offset 0 "thetopic"
-
-
-      let retByteStrings = concat $ map (map (_kafkaByteString . fromJust . _valueBytes . fifth5 . _messageFields .  _setMessage)) $ map _messageSetMembers $ map fourth4 $ head $ map snd $ _fetchResponseFields result
+      blocks <- fetchBlocks offset
                                      
-      liftIO $ putStrLn $ unlines $ map format $ (map (rlpDecode . rlpDeserialize) retByteStrings::[Block])
+      liftIO $ putStrLn $ unlines $ map format blocks
 
-      doConsume' (offset + fromIntegral (length retByteStrings))
+      doConsume' (offset + fromIntegral (length blocks))
