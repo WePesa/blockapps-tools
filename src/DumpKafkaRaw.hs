@@ -23,7 +23,7 @@ fifth5::(a, b, c, d, e)->e
 fifth5 (_, _, _, _, x) = x
 
 dumpKafkaRaw = do
-  _ <- runKafka (mkKafkaState "qqqqkafkaclientidqqqq" ("127.0.0.1", 9092)) doConsume'
+  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) doConsume'
   return ()
   where
     doConsume' = do
