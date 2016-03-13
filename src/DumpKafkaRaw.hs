@@ -22,16 +22,14 @@ fourth4 (_, _, _, x) = x
 fifth5::(a, b, c, d, e)->e
 fifth5 (_, _, _, _, x) = x
 
-dumpKafkaRaw = do
-  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) doConsume'
+dumpKafkaRaw startingBlock = do
+  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
   return ()
   where
-    doConsume' = do
+    doConsume' offset = do
               stateRequiredAcks .= -1
               stateWaitSize .= 1
               stateWaitTime .= 100000
-              --offset <- getLastOffset LatestTime 0 "thetopic"
-              let offset = 0
               result <- fetch offset 0 "thetopic"
 
 
@@ -39,4 +37,4 @@ dumpKafkaRaw = do
                                      
               liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) qq
 
-              doConsume'
+              doConsume' (offset + fromIntegral (length qq))

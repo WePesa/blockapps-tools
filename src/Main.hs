@@ -37,8 +37,8 @@ data Options =
   | Raw{filename::String}
   | RLP{filename::String}
   | Init{hash::String, db::String}
-  | DumpKafkaBlocks{}
-  | DumpKafkaRaw{}
+  | DumpKafkaBlocks{startingBlock::Int}
+  | DumpKafkaRaw{startingBlock::Int}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -105,11 +105,15 @@ rawMPOptions =
 
 dumpKafkaBlocksOptions::Annotate Ann
 dumpKafkaBlocksOptions =
-  record DumpKafkaBlocks{} []
+  record DumpKafkaBlocks{startingBlock=undefined} [
+    startingBlock := 0 += typ "INT"
+    ]
 
 dumpKafkaRawOptions::Annotate Ann
 dumpKafkaRawOptions =
-  record DumpKafkaRaw{} []
+  record DumpKafkaRaw{startingBlock=undefined} [
+    startingBlock := 0 += typ "INT" += argPos 1
+    ]
 
 options::Annotate Ann
 options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, dumpKafkaBlocksOptions, dumpKafkaRawOptions]
@@ -157,6 +161,8 @@ run RLP{filename=f} = do
 run RawMP{stateRoot=sr, filename=f} = do
   RawMP.doit f (MP.SHAPtr $ fst $ B16.decode $ BC.pack sr)
 
-run DumpKafkaBlocks{} = dumpKafkaBlocks
+run DumpKafkaBlocks{startingBlock=sb} =
+  dumpKafkaBlocks $ fromIntegral sb
 
-run DumpKafkaRaw{} = dumpKafkaRaw
+run DumpKafkaRaw{startingBlock=sb} =
+  dumpKafkaRaw $ fromIntegral sb

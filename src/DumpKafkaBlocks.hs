@@ -19,14 +19,8 @@ import Blockchain.Data.DataDefs
 import Blockchain.Data.RLP
 import Blockchain.Format
 
-fourth4::(a, b, c, d)->d
-fourth4 (_, _, _, x) = x
-
-fifth5::(a, b, c, d, e)->e
-fifth5 (_, _, _, _, x) = x
-
-dumpKafkaBlocks = do
-  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' 0
+dumpKafkaBlocks startingBlock = do
+  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
   return ()
   where
     doConsume' offset = do
