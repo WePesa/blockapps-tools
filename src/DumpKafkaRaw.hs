@@ -23,8 +23,10 @@ fifth5::(a, b, c, d, e)->e
 fifth5 (_, _, _, _, x) = x
 
 dumpKafkaRaw startingBlock = do
-  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
-  return ()
+  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  case ret of
+    Left e -> error $ show e
+    Right v -> return ()
   where
     doConsume' offset = do
               stateRequiredAcks .= -1

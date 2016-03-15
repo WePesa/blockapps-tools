@@ -20,14 +20,16 @@ import Blockchain.Data.RLP
 import Blockchain.Format
 
 dumpKafkaBlocks startingBlock = do
-  _ <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
-  return ()
+  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  case ret of
+    Left e -> error $ show e
+    Right v -> return ()
   where
     doConsume' offset = do
       stateRequiredAcks .= -1
       stateWaitSize .= 1
       stateWaitTime .= 100000
-      --offset <- getLastOffset LatestTime 0 "thetopic"
+      offset <- getLastOffset LatestTime 0 "thetopic"
       blocks <- fetchBlocks offset
                                      
       liftIO $ putStrLn $ unlines $ map format blocks
