@@ -29,7 +29,6 @@ dumpKafkaUnminedBlocks startingBlock = do
       stateRequiredAcks .= -1
       stateWaitSize .= 1
       stateWaitTime .= 100000
-      offset <- getLastOffset LatestTime 0 "thetopic"
       blocks <- fetchUnminedBlocks offset
                                      
       liftIO $ putStrLn $ unlines $ map format blocks
