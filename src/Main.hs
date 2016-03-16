@@ -124,7 +124,7 @@ dumpKafkaRawOptions =
     ]
 
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, dumpKafkaBlocksOptions, dumpKafkaRawOptions]
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
