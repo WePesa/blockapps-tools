@@ -55,6 +55,7 @@ executable queryStrato
                    BlockGO
                    Code
                    DumpKafkaBlocks
+                   DumpKafkaUnminedBlocks
                    DumpKafkaRaw
                    DumpLevelDB
                    Hash
