@@ -4,17 +4,13 @@
 module DumpKafkaRaw where
 
 import Control.Lens
-import Control.Monad
 import Control.Monad.IO.Class
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as BC
 import Data.Maybe
 import Network.Kafka
 import Network.Kafka.Consumer
-import Network.Kafka.Producer
 import Network.Kafka.Protocol
-import System.Environment
-import System.IO
 
 fourth4::(a, b, c, d)->d
 fourth4 (_, _, _, x) = x
@@ -22,11 +18,12 @@ fourth4 (_, _, _, x) = x
 fifth5::(a, b, c, d, e)->e
 fifth5 (_, _, _, _, x) = x
 
+dumpKafkaRaw::Offset->IO ()
 dumpKafkaRaw startingBlock = do
   ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
-    Right v -> return ()
+    Right _ -> return ()
   where
     doConsume' offset = do
               stateRequiredAcks .= -1
