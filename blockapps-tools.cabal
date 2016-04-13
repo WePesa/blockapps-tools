@@ -49,6 +49,7 @@ executable queryStrato
                  , strato-p2p-client
                  , time
                  , transformers
+                 , strato-conf
     main-is: Main.hs
     other-modules:
                    Block

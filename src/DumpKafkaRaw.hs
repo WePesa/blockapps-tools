@@ -11,6 +11,8 @@ import Data.Maybe
 import Network.Kafka
 import Network.Kafka.Consumer
 import Network.Kafka.Protocol
+import Blockchain.KafkaTopics
+import qualified Data.Map as M
 
 fourth4::(a, b, c, d)->d
 fourth4 (_, _, _, x) = x
@@ -20,7 +22,10 @@ fifth5 (_, _, _, _, x) = x
 
 dumpKafkaRaw::Offset->IO ()
 dumpKafkaRaw startingBlock = do
-  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  let maybeBlockappsDataTopic = M.lookup "queryStrato" kafkaTopics
+      kafkaString = KString . BC.pack $ fromMaybe "queryStrato" maybeBlockappsDataTopic
+
+  ret <- runKafka (mkKafkaState kafkaString ("127.0.0.1", 9092)) $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
     Right _ -> return ()

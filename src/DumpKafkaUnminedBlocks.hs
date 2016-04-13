@@ -7,13 +7,21 @@ import Control.Lens
 import Control.Monad.IO.Class
 import Network.Kafka
 import Network.Kafka.Protocol
+import qualified Data.Map as M
+import Data.Maybe
+import qualified Data.ByteString.Char8 as BC
 
 import Blockchain.Data.BlockDB
 import Blockchain.Format
+import Blockchain.KafkaTopics
 
 dumpKafkaUnminedBlocks::Offset->IO ()
 dumpKafkaUnminedBlocks startingBlock = do
-  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  let maybeBlockappsDataTopic = M.lookup "queryStrato" kafkaTopics
+      kafkaString = KString . BC.pack $ fromMaybe "queryStrato" maybeBlockappsDataTopic
+
+
+  ret <- runKafka (mkKafkaState kafkaString ("127.0.0.1", 9092)) $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
     Right _ -> return ()

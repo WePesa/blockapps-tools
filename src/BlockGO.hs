@@ -42,9 +42,7 @@ ldbForEach dbDir' f = do
 doit::String->IO ()
 --doit dbtype h = showKeyVal (formatBlock . rlpDecode . rlpDeserialize) dbtype "blocks" (if h == "-" then Nothing else Just h)
 doit h = do
-  dbDir' <- fmap ((++ dbDir h) . (++ "/")) getHomeDirectory
-
-  ldbForEach dbDir' $ \key val -> do
+  ldbForEach (dbDir h) $ \key val -> do
       when (B.isPrefixOf "block" key) $
         putStrLn $ "----------\n"
                      ++ show (pretty key)
