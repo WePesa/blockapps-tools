@@ -17,10 +17,7 @@ import Blockchain.KafkaTopics
 
 dumpKafkaBlocks::Offset->IO ()
 dumpKafkaBlocks startingBlock = do
-  let maybeBlockappsDataTopic = M.lookup "queryStrato" kafkaTopics
-      kafkaString = KString . BC.pack $ fromMaybe "queryStrato" maybeBlockappsDataTopic
-
-  ret <- runKafka (mkKafkaState kafkaString ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
     Right _ -> return ()
