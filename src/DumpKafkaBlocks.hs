@@ -10,6 +10,7 @@ import Network.Kafka.Protocol
 
 import Blockchain.Data.BlockDB
 import Blockchain.Format
+import Blockchain.Stream.VMEvent
 
 dumpKafkaBlocks::Offset->IO ()
 dumpKafkaBlocks startingBlock = do
@@ -22,8 +23,8 @@ dumpKafkaBlocks startingBlock = do
       stateRequiredAcks .= -1
       stateWaitSize .= 1
       stateWaitTime .= 100000
-      blocks <- fetchBlocks offset
+      vmEvents <- fetchVMEvents offset
                                      
-      liftIO $ putStrLn $ unlines $ map format blocks
+      liftIO $ putStrLn $ unlines $ map format vmEvents
 
-      doConsume' (offset + fromIntegral (length blocks))
+      doConsume' (offset + fromIntegral (length vmEvents))
