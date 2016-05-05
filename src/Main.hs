@@ -46,7 +46,7 @@ data Options =
 stateOptions::Annotate Ann
 stateOptions = 
   record State{root=undefined, db=undefined} [
-    root := def += typ "SHAPtr" += argPos 1,
+    root := def += typ "StateRoot" += argPos 1,
     db := def += typ "DBSTRING" += argPos 0
     ]
 
@@ -141,7 +141,7 @@ main = do
 run::Options->IO ()
 
 run State{root=r, db=db'} = do
-  let sr = MP.SHAPtr $ fst $ B16.decode $ BC.pack r
+  let sr = MP.StateRoot $ fst $ B16.decode $ BC.pack r
   State.doit db' sr
 
 run Block{hash=h, db=db'} = do
@@ -167,7 +167,7 @@ run RLP{filename=f} = do
   RLP.doit f
 
 run RawMP{stateRoot=sr, filename=f} = do
-  RawMP.doit f (MP.SHAPtr $ fst $ B16.decode $ BC.pack sr)
+  RawMP.doit f (MP.StateRoot $ fst $ B16.decode $ BC.pack sr)
 
 run DumpKafkaBlocks{startingBlock=sb} =
   dumpKafkaBlocks $ fromIntegral sb

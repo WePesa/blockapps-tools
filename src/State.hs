@@ -28,7 +28,7 @@ nibbleStringToByteString::N.NibbleString->B.ByteString
 nibbleStringToByteString (N.EvenNibbleString x) = x
 nibbleStringToByteString _ = error "nibbleStringToByteString called for Odd length nibblestring"
 
-showVals::DB.DB->MP.SHAPtr->ResourceT IO ()
+showVals::DB.DB->MP.StateRoot->ResourceT IO ()
 showVals sdb sr = do
   homeDir <- liftIO getHomeDirectory
   db <- DB.open (homeDir </> ".ethereumH" </> "hash") def
@@ -48,7 +48,7 @@ showVals sdb sr = do
       ++ tab ("\n" ++ format (rlpDecode $ rlpDeserialize $ rlpDecode val::AddressState))
       ++ "\n----------------------------"
 
-doit::String->MP.SHAPtr->IO()
+doit::String->MP.StateRoot->IO()
 doit theType sr = do
   homeDir <- getHomeDirectory                     
   DB.runResourceT $ do

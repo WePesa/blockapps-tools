@@ -19,14 +19,14 @@ formatKV::(N.NibbleString, RLPObject)->Doc
 formatKV (key, val) =
     pretty key <> text ": " <> pretty (rlpDeserialize $ rlpDecode val)
 
-showVals::DB.MonadResource m=>DB.DB->MP.SHAPtr->m ()
+showVals::DB.MonadResource m=>DB.DB->MP.StateRoot->m ()
 showVals sdb sr = do
   kvs <- MP.unsafeGetKeyVals MP.MPDB{MP.ldb=sdb, MP.stateRoot=sr} ""
   liftIO $ putStrLn $ show $ length kvs
   --liftIO $ putStrLn $ displayS (renderPretty 1.0 200 $ vsep $ formatKV <$> kvs) ""
   liftIO $ putStrLn $ displayS (renderPretty 1.0 200 $ vsep $ formatKV <$> kvs) "" 
 
-doit::String->MP.SHAPtr->IO()
+doit::String->MP.StateRoot->IO()
 doit filename sr = do
   DB.runResourceT $ do
 --    dbs <- openDBs theType
