@@ -62,10 +62,7 @@ showKeyVal f dbType dbName maybeKey = do
 
 typeToDB::String->IO String
 typeToDB "h" = do
-  homeDir <- getHomeDirectory
-  return $ homeDir </> ".ethereumH"
+  return $ ".ethereumH"
 typeToDB "c" = do
-  homeDir <- getHomeDirectory
-  --return $ homeDir </> "Library" </> "Application Support" </> "Ethereum"
-  return $ homeDir </> ".ethereum"
+  return $ ".ethereum"
 typeToDB x = error $ "Unsupported case in typeToDB: " ++ show x
