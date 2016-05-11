@@ -15,10 +15,11 @@ import Blockchain.Data.BlockDB
 import Blockchain.Format
 import Blockchain.Stream.VMEvent
 import Blockchain.KafkaTopics
+import Blockchain.EthConf
 
 dumpKafkaBlocks::Offset->IO ()
 dumpKafkaBlocks startingBlock = do
-  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  ret <- runKafkaConfigured "queryStrato" $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
     Right _ -> return ()

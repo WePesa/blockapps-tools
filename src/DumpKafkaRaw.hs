@@ -12,6 +12,7 @@ import Network.Kafka
 import Network.Kafka.Consumer
 import Network.Kafka.Protocol
 import Blockchain.KafkaTopics
+import Blockchain.EthConf
 import qualified Data.Map as M
 
 fourth4::(a, b, c, d)->d
@@ -22,7 +23,7 @@ fifth5 (_, _, _, _, x) = x
 
 dumpKafkaRaw::Offset->IO ()
 dumpKafkaRaw startingBlock = do
-  ret <- runKafka (mkKafkaState "queryStrato" ("127.0.0.1", 9092)) $ doConsume' startingBlock
+  ret <- runKafkaConfigured "queryStrato" $ doConsume' startingBlock
   case ret of
     Left e -> error $ show e
     Right _ -> return ()
