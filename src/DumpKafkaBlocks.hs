@@ -7,14 +7,9 @@ import Control.Lens
 import Control.Monad.IO.Class
 import Network.Kafka
 import Network.Kafka.Protocol
-import qualified Data.Map as M
-import Data.Maybe
-import qualified Data.ByteString.Char8 as BC
 
-import Blockchain.Data.BlockDB
 import Blockchain.Format
 import Blockchain.Stream.VMEvent
-import Blockchain.KafkaTopics
 
 dumpKafkaBlocks::Offset->IO ()
 dumpKafkaBlocks startingBlock = do
