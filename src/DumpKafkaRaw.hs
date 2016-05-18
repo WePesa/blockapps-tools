@@ -12,6 +12,8 @@ import Network.Kafka
 import Network.Kafka.Consumer
 import Network.Kafka.Protocol
 
+import Blockchain.EthConf
+
 fourth4::(a, b, c, d)->d
 fourth4 (_, _, _, x) = x
 

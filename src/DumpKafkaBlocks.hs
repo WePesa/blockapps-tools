@@ -10,6 +10,7 @@ import Network.Kafka.Protocol
 
 import Blockchain.Format
 import Blockchain.Stream.VMEvent
+import Blockchain.EthConf
 
 dumpKafkaBlocks::Offset->IO ()
 dumpKafkaBlocks startingBlock = do

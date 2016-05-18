@@ -10,6 +10,7 @@ import Network.Kafka.Protocol
 
 import Blockchain.Format
 import Blockchain.Stream.UnminedBlock
+import Blockchain.EthConf
 
 dumpKafkaUnminedBlocks::Offset->IO ()
 dumpKafkaUnminedBlocks startingBlock = do
