@@ -12,7 +12,6 @@ import Control.Monad.Trans.Resource
 import qualified Data.ByteString as B
 import Data.Default
 import qualified Database.LevelDB as DB
-import System.Directory
 --import System.Environment
 import System.FilePath
 import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), (</>))

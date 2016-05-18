@@ -10,7 +10,6 @@ import Control.Monad.Trans.Resource
 import qualified Data.ByteString as B
 import Data.Default
 import qualified Database.LevelDB as DB
-import System.Directory
 import System.FilePath
 
 import qualified Data.NibbleString as N
