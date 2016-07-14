@@ -13,6 +13,7 @@ import Network.Kafka.Consumer
 import Network.Kafka.Protocol
 
 import Blockchain.EthConf
+import Blockchain.KafkaTopics
 
 fourth4::(a, b, c, d)->d
 fourth4 (_, _, _, x) = x
@@ -31,7 +32,7 @@ dumpKafkaRaw startingBlock = do
               stateRequiredAcks .= -1
               stateWaitSize .= 1
               stateWaitTime .= 100000
-              result <- fetch offset 0 "thetopic"
+              result <- fetch offset 0 (lookupTopic "block")
 
 
               let qq = concat $ map (map (_kafkaByteString . fromJust . _valueBytes . fifth5 . _messageFields .  _setMessage)) $ map _messageSetMembers $ map fourth4 $ head $ map snd $ _fetchResponseFields result
