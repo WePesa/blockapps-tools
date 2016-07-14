@@ -15,12 +15,6 @@ import Network.Kafka.Protocol
 import Blockchain.EthConf
 import Blockchain.KafkaTopics
 
-fourth4::(a, b, c, d)->d
-fourth4 (_, _, _, x) = x
-
-fifth5::(a, b, c, d, e)->e
-fifth5 (_, _, _, _, x) = x
-
 dumpKafkaRaw::Offset->IO ()
 dumpKafkaRaw startingBlock = do
   ret <- runKafkaConfigured "queryStrato" $ doConsume' startingBlock
