@@ -32,11 +32,8 @@ dumpKafkaRaw startingBlock = do
               stateRequiredAcks .= -1
               stateWaitSize .= 1
               stateWaitTime .= 100000
-              result <- fetch offset 0 (lookupTopic "block")
+              result <- fmap (map tamPayload . fetchMessages) $ fetch offset 0 (lookupTopic "block")
 
+              liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) result
 
-              let qq = concat $ map (map (_kafkaByteString . fromJust . _valueBytes . fifth5 . _messageFields .  _setMessage)) $ map _messageSetMembers $ map fourth4 $ head $ map snd $ _fetchResponseFields result
-                                     
-              liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) qq
-
-              doConsume' (offset + fromIntegral (length qq))
+              doConsume' (offset + fromIntegral (length result))
