@@ -12,22 +12,17 @@ import Network.Kafka
 import Network.Kafka.Consumer
 import Network.Kafka.Protocol
 
+import Blockchain.Stream.Raw
 import Blockchain.EthConf
 import Blockchain.KafkaTopics
 
 dumpKafkaRaw::Offset->IO ()
 dumpKafkaRaw startingBlock = do
-  ret <- runKafkaConfigured "queryStrato" $ doConsume' startingBlock
-  case ret of
-    Left e -> error $ show e
-    Right _ -> return ()
+  doConsume' startingBlock
   where
     doConsume' offset = do
-              stateRequiredAcks .= -1
-              stateWaitSize .= 1
-              stateWaitTime .= 100000
-              result <- fmap (map tamPayload . fetchMessages) $ fetch offset 0 (lookupTopic "block")
+      result <- fmap (fromMaybe (error "offset out of range")) $ fetchBytesIO (lookupTopic "block") offset
 
-              liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) result
+      liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) result
 
-              doConsume' (offset + fromIntegral (length result))
+      doConsume' (offset + fromIntegral (length result))
