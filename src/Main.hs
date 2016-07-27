@@ -12,6 +12,7 @@ import Code
 import DumpKafkaBlocks
 import DumpKafkaUnminedBlocks
 import DumpKafkaRaw
+import FRawMP
 import Raw
 import RLP
 import RawMP
@@ -35,6 +36,7 @@ data Options =
   | Hash{hash::String, db::String} 
   | Code{hash::String, db::String}
   | RawMP{stateRoot::String, filename::String}
+  | FRawMP{stateRoot::String, filename::String}
   | Raw{filename::String}
   | RLP{filename::String}
   | Init{hash::String, db::String}
@@ -105,6 +107,13 @@ rawMPOptions =
     filename := def += typ "DBSTRING" += argPos 0
     ]
 
+fRawMPOptions::Annotate Ann
+fRawMPOptions = 
+  record FRawMP{stateRoot=undefined, filename=undefined} [
+    stateRoot := def += typ "USERAGENT" += argPos 1,
+    filename := def += typ "DBSTRING" += argPos 0
+    ]
+
 dumpKafkaBlocksOptions::Annotate Ann
 dumpKafkaBlocksOptions =
   record DumpKafkaBlocks{startingBlock=undefined} [
@@ -124,7 +133,7 @@ dumpKafkaRawOptions =
     ]
 
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -168,6 +177,9 @@ run RLP{filename=f} = do
 
 run RawMP{stateRoot=sr, filename=f} = do
   RawMP.doit f (MP.StateRoot $ fst $ B16.decode $ BC.pack sr)
+
+run FRawMP{stateRoot=sr, filename=f} = do
+  FRawMP.doit f (MP.StateRoot $ fst $ B16.decode $ BC.pack sr)
 
 run DumpKafkaBlocks{startingBlock=sb} =
   dumpKafkaBlocks $ fromIntegral sb

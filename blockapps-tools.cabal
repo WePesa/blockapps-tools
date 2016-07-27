@@ -59,6 +59,7 @@ executable queryStrato
                    DumpKafkaUnminedBlocks
                    DumpKafkaRaw
                    DumpLevelDB
+                   FRawMP
                    Hash
                    Init
                    Raw
