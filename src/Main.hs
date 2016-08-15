@@ -16,6 +16,7 @@ import FRawMP
 import Raw
 import RLP
 import RawMP
+import Psql
 
 
 --import Debug.Trace
@@ -43,6 +44,7 @@ data Options =
   | DumpKafkaBlocks{startingBlock::Int}
   | DumpKafkaUnminedBlocks{startingBlock::Int}
   | DumpKafkaRaw{startingBlock::Int}
+  | Psql{}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -132,8 +134,12 @@ dumpKafkaRawOptions =
     startingBlock := 0 += typ "INT" += argPos 1
     ]
 
+psqlOptions::Annotate Ann
+psqlOptions =
+  record Psql{} []
+
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions, psqlOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -189,3 +195,7 @@ run DumpKafkaUnminedBlocks{startingBlock=sb} =
 
 run DumpKafkaRaw{startingBlock=sb} =
   dumpKafkaRaw $ fromIntegral sb
+
+run Psql{} =
+  psql
+

@@ -45,6 +45,7 @@ executable queryStrato
                  , mtl
                  , network
                  , nibblestring
+                 , process
                  , resourcet
                  , strato-p2p-client
                  , time
