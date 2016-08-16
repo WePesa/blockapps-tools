@@ -68,6 +68,7 @@ executable queryStrato
                    RLP
                    State
                    Util
+                   Psql
     buildable: True
     hs-source-dirs: src
 
