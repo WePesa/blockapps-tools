@@ -69,6 +69,7 @@ executable queryStrato
                    State
                    Util
                    Psql
+                   InsertTX
     buildable: True
     hs-source-dirs: src
 

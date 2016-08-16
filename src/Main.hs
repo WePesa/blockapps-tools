@@ -17,7 +17,7 @@ import Raw
 import RLP
 import RawMP
 import Psql
-
+import InsertTX
 
 --import Debug.Trace
 
@@ -45,6 +45,7 @@ data Options =
   | DumpKafkaUnminedBlocks{startingBlock::Int}
   | DumpKafkaRaw{startingBlock::Int}
   | Psql{}
+  | InsertTX{}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -138,8 +139,12 @@ psqlOptions::Annotate Ann
 psqlOptions =
   record Psql{} []
 
+insertTXOptions::Annotate Ann
+insertTXOptions =
+  record InsertTX{} []
+
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions, psqlOptions]
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions, psqlOptions, insertTXOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -198,4 +203,7 @@ run DumpKafkaRaw{startingBlock=sb} =
 
 run Psql{} =
   psql
+
+run InsertTX{} =
+  insertTX
 
