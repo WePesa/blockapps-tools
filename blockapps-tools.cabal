@@ -57,6 +57,7 @@ executable queryStrato
                    Code
                    DumpKafkaBlocks
                    DumpKafkaUnminedBlocks
+                   DumpKafkaStateDiff
                    DumpKafkaRaw
                    DumpLevelDB
                    FRawMP

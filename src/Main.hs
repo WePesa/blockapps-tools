@@ -11,6 +11,7 @@ import Hash
 import Code
 import DumpKafkaBlocks
 import DumpKafkaUnminedBlocks
+import DumpKafkaStateDiff
 import DumpKafkaRaw
 import FRawMP
 import Raw
@@ -43,6 +44,7 @@ data Options =
   | DumpKafkaBlocks{startingBlock::Int}
   | DumpKafkaUnminedBlocks{startingBlock::Int}
   | DumpKafkaRaw{startingBlock::Int}
+  | DumpKafkaStateDiff{startingBlock::Int}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -132,8 +134,27 @@ dumpKafkaRawOptions =
     startingBlock := 0 += typ "INT" += argPos 1
     ]
 
+dumpKafkaStateDiffOptions::Annotate Ann
+dumpKafkaStateDiffOptions =
+  record DumpKafkaStateDiff{startingBlock=undefined} [
+    startingBlock := 0 += typ "INT"
+    ]
+
 options::Annotate Ann
-options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
+options = modes_ [stateOptions
+                , blockOptions
+                , blockGoOptions
+                , hashOptions
+                , initOptions
+                , codeOptions
+                , rawOptions
+                , rlpOptions
+                , rawMPOptions
+                , fRawMPOptions
+                , dumpKafkaBlocksOptions
+                , dumpKafkaUnminedBlocksOptions
+                , dumpKafkaRawOptions
+                , dumpKafkaStateDiffOptions]
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -189,3 +210,6 @@ run DumpKafkaUnminedBlocks{startingBlock=sb} =
 
 run DumpKafkaRaw{startingBlock=sb} =
   dumpKafkaRaw $ fromIntegral sb
+
+run DumpKafkaStateDiff{startingBlock=sb} =
+  dumpKafkaStateDiff $ fromIntegral sb
