@@ -50,6 +50,7 @@ executable queryStrato
                  , time
                  , transformers
                  , strato-conf
+                 , aeson
     main-is: Main.hs
     other-modules:
                    Block
