@@ -51,6 +51,8 @@ executable queryStrato
                  , transformers
                  , strato-conf
                  , aeson
+                 , text
+                 
     main-is: Main.hs
     other-modules:
                    Block
