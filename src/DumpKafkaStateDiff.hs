@@ -5,26 +5,24 @@ module DumpKafkaStateDiff where
 
 import Control.Lens
 import Control.Monad.IO.Class
+import qualified Data.ByteString.Base16 as B16
+import qualified Data.ByteString.Char8 as BC
+import Data.Maybe
 import Network.Kafka
+import Network.Kafka.Consumer
 import Network.Kafka.Protocol
 
-import Blockchain.Format
-import Blockchain.Stream.VMEvent
+import Blockchain.Stream.Raw
 import Blockchain.EthConf
+import Blockchain.KafkaTopics
 
 dumpKafkaStateDiff::Offset->IO ()
 dumpKafkaStateDiff startingBlock = do
-  ret <- runKafkaConfigured "queryStrato" $ doConsume' startingBlock
-  case ret of
-    Left e -> error $ show e
-    Right _ -> return ()
+  doConsume' startingBlock
   where
     doConsume' offset = do
-      stateRequiredAcks .= -1
-      stateWaitSize .= 1
-      stateWaitTime .= 100000
-      vmEvents <- fetchVMEvents offset
-                                     
-      liftIO $ putStrLn $ unlines $ map format vmEvents
+      result <- fmap (fromMaybe (error "offset out of range")) $ fetchBytesIO (lookupTopic "statediff") offset
 
-      doConsume' (offset + fromIntegral (length vmEvents))
+      liftIO $ putStrLn $ unlines $ map (BC.unpack . B16.encode) result
+
+      doConsume' (offset + fromIntegral (length result))
