@@ -17,7 +17,8 @@ import FRawMP
 import Raw
 import RLP
 import RawMP
-
+import Psql
+import InsertTX
 
 --import Debug.Trace
 
@@ -45,6 +46,8 @@ data Options =
   | DumpKafkaUnminedBlocks{startingBlock::Int}
   | DumpKafkaRaw{startingBlock::Int}
   | DumpKafkaStateDiff{startingBlock::Int}
+  | Psql{}
+  | InsertTX{}
   deriving (Show, Data, Typeable)
 
 stateOptions::Annotate Ann
@@ -134,13 +137,26 @@ dumpKafkaRawOptions =
     startingBlock := 0 += typ "INT" += argPos 1
     ]
 
+<<<<<<< HEAD
 dumpKafkaStateDiffOptions::Annotate Ann
 dumpKafkaStateDiffOptions =
   record DumpKafkaStateDiff{startingBlock=undefined} [
     startingBlock := 0 += typ "INT"
     ]
 
+||||||| merged common ancestors
+=======
+psqlOptions::Annotate Ann
+psqlOptions =
+  record Psql{} []
+
+insertTXOptions::Annotate Ann
+insertTXOptions =
+  record InsertTX{} []
+
+>>>>>>> 128382535_searchsearch
 options::Annotate Ann
+<<<<<<< HEAD
 options = modes_ [stateOptions
                 , blockOptions
                 , blockGoOptions
@@ -155,6 +171,11 @@ options = modes_ [stateOptions
                 , dumpKafkaUnminedBlocksOptions
                 , dumpKafkaRawOptions
                 , dumpKafkaStateDiffOptions]
+||||||| merged common ancestors
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions]
+=======
+options = modes_ [stateOptions, blockOptions, blockGoOptions, hashOptions, initOptions, codeOptions, rawOptions, rlpOptions, rawMPOptions, fRawMPOptions, dumpKafkaBlocksOptions, dumpKafkaUnminedBlocksOptions, dumpKafkaRawOptions, psqlOptions, insertTXOptions]
+>>>>>>> 128382535_searchsearch
 
 
 --      += summary "Apply shims, reorganize, and generate to the input"
@@ -210,6 +231,17 @@ run DumpKafkaUnminedBlocks{startingBlock=sb} =
 
 run DumpKafkaRaw{startingBlock=sb} =
   dumpKafkaRaw $ fromIntegral sb
+<<<<<<< HEAD
 
 run DumpKafkaStateDiff{startingBlock=sb} =
   dumpKafkaStateDiff $ fromIntegral sb
+||||||| merged common ancestors
+=======
+
+run Psql{} =
+  psql
+
+run InsertTX{} =
+  insertTX
+
+>>>>>>> 128382535_searchsearch

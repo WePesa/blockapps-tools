@@ -41,10 +41,13 @@ executable queryStrato
                  , lens
                  , merkle-patricia-db
                  , milena
+                 , monad-logger
                  , monad-loops
                  , mtl
                  , network
                  , nibblestring
+                 , persistent-postgresql
+                 , process
                  , resourcet
                  , strato-p2p-client
                  , time
@@ -71,6 +74,8 @@ executable queryStrato
                    RLP
                    State
                    Util
+                   Psql
+                   InsertTX
     buildable: True
     hs-source-dirs: src
 
