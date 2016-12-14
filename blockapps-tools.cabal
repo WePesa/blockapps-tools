@@ -55,6 +55,7 @@ executable queryStrato
                  , strato-conf
                  , aeson
                  , text
+                 , strato-sequencer
                  
     main-is: Main.hs
     other-modules:
@@ -63,6 +64,8 @@ executable queryStrato
                    Code
                    DumpKafkaBlocks
                    DumpKafkaUnminedBlocks
+                   DumpKafkaSequencer
+                   DumpKafkaUnSequencer
                    DumpKafkaStateDiff
                    DumpKafkaRaw
                    DumpLevelDB

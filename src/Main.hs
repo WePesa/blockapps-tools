@@ -11,6 +11,8 @@ import Hash
 import Code
 import DumpKafkaBlocks
 import DumpKafkaUnminedBlocks
+import DumpKafkaSequencer
+import DumpKafkaUnSequencer
 import DumpKafkaStateDiff
 import DumpKafkaRaw
 import FRawMP
@@ -22,14 +24,11 @@ import InsertTX
 
 --import Debug.Trace
 
-
-
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as BC
 --import Text.PrettyPrint.ANSI.Leijen hiding ((<$>))
 
 import qualified Blockchain.Database.MerklePatricia as MP
-
 
 data Options = 
   State{root::String, db::String} 
@@ -43,6 +42,8 @@ data Options =
   | RLP{filename::String}
   | Init{hash::String, db::String}
   | DumpKafkaBlocks{startingBlock::Int}
+  | DumpKafkaSequencer{startingBlock::Int}
+  | DumpKafkaUnSequencer{startingBlock::Int}
   | DumpKafkaUnminedBlocks{startingBlock::Int}
   | DumpKafkaRaw{startingBlock::Int}
   | DumpKafkaStateDiff{startingBlock::Int}
@@ -77,7 +78,6 @@ hashOptions =
     hash := def += typ "FILENAME" += argPos 1 += opt ("-"::String),
     db := def += typ "DBSTRING" += argPos 0
     ]
-
 
 initOptions::Annotate Ann
 initOptions = 
@@ -117,6 +117,18 @@ fRawMPOptions =
   record FRawMP{stateRoot=undefined, filename=undefined} [
     stateRoot := def += typ "USERAGENT" += argPos 1,
     filename := def += typ "DBSTRING" += argPos 0
+    ]
+
+dumpKafkaSequencerOptions:: Annotate Ann
+dumpKafkaSequencerOptions =
+  record DumpKafkaSequencer{startingBlock = undefined} [
+    startingBlock := 0 += typ "INT"
+    ]
+
+dumpKafkaUnSequencerOptions:: Annotate Ann
+dumpKafkaUnSequencerOptions =
+  record DumpKafkaUnSequencer{startingBlock = undefined} [
+    startingBlock := 0 += typ "INT"
     ]
 
 dumpKafkaBlocksOptions::Annotate Ann
@@ -163,6 +175,8 @@ options = modes_ [stateOptions
                 , rawMPOptions
                 , fRawMPOptions
                 , dumpKafkaBlocksOptions
+                , dumpKafkaSequencerOptions
+                , dumpKafkaUnSequencerOptions
                 , dumpKafkaUnminedBlocksOptions
                 , dumpKafkaRawOptions
                 , dumpKafkaStateDiffOptions
@@ -177,7 +191,6 @@ main = do
   run opts
     
 -------------------
-
 
 run::Options->IO ()
 
@@ -213,6 +226,12 @@ run RawMP{stateRoot=sr, filename=f} = do
 run FRawMP{stateRoot=sr, filename=f} = do
   FRawMP.doit f (MP.StateRoot $ fst $ B16.decode $ BC.pack sr)
 
+run DumpKafkaSequencer{startingBlock = sb} =
+  dumpKafkaSequencer $ fromIntegral sb
+
+run DumpKafkaUnSequencer{startingBlock = sb} =
+  dumpKafkaUnSequencer $ fromIntegral sb
+
 run DumpKafkaBlocks{startingBlock=sb} =
   dumpKafkaBlocks $ fromIntegral sb
 
@@ -221,7 +240,6 @@ run DumpKafkaUnminedBlocks{startingBlock=sb} =
 
 run DumpKafkaRaw{startingBlock=sb} =
   dumpKafkaRaw $ fromIntegral sb
-
 
 run DumpKafkaStateDiff{startingBlock=sb} =
   dumpKafkaStateDiff $ fromIntegral sb
